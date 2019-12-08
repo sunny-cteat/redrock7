@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>节流：</p>
+    <input id="write1" type="text">
+    <p>防抖：</p>
+    <input id="write2" type="text">
+    <script>
+        //节流
+        var text1=document.getElementById('write1');
+        text1.addEventListener('input',trol(contentInput,1000));
+        function contentInput(){
+            console.log(text1.value)
+        }
+        function trol(fn1,delay1){
+            var t = null,
+            begin = new Date().getTime();
+            return function(){
+                var _self = this,
+                args = arguments,
+                cur = new Date().getTime();
+                clearTimeout(t);
+                if(cur-begin>=delay1){
+                    fn1.apply(_self,args);
+                    begin=cur;
+                }else{
+                    t = setTimeout(function () {
+                        fn1.apply(_self,args);
+                    },delay1)
+                }
+            }
+        }
+        
+        
+        //防抖
+        var text2=document.getElementById('write2');
+        function getTnputValue(){
+            console.log(text2.value)
+        }
+        function debounce(fn2,delay2){
+            let timer = null;
+            return ()=>{
+                if(timer){
+                    clearTimeout(timer);
+                }
+                timer = setTimeout( () => {
+                    fn2()
+                },delay2)
+            }
+        }
+        text2.addEventListener('input',debounce(getTnputValue,1000))
+    </script>
+</body>
+</html>
